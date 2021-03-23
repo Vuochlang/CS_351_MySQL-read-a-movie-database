@@ -1,0 +1,95 @@
+1.
+SELECT voteAverage AS 'vote average'
+FROM Movie
+LIMIT 5;
++--------------+
+| vote average |
++--------------+
+|          6.5 |
+|          8.1 |
+|          7.6 |
+|          8.2 |
+|          7.9 |
++--------------+
+
+2.
+SELECT Movie.title AS 'movie title' , ProductionCompanies.name AS 'production company name'
+FROM Movie
+INNER JOIN FromCompany
+ON Movie.mId = FromCompany.mId
+INNER JOIN ProductionCompanies
+ON FromCompany.cId = ProductionCompanies.id
+INNER JOIN FromCountry
+ON Movie.mId = FromCountry.mId
+INNER JOIN ProductionCountries
+ON FromCountry.cId = ProductionCountries.iso_3166_1
+WHERE iso_3166_1 = "US"
+LIMIT 5;
++--------------+----------------------------------------+
+| movie title  | production company name                |
++--------------+----------------------------------------+
+| Four Rooms   | Miramax Films                          |
+| Four Rooms   | A Band Apart                           |
+| Star Wars    | Lucasfilm                              |
+| Star Wars    | Twentieth Century Fox Film Corporation |
+| Finding Nemo | Pixar Animation Studios                |
++--------------+----------------------------------------+
+
+3.
+SELECT title AS 'movie title', revenue
+FROM Movie
+ORDER BY revenue DESC
+LIMIT 5;
++----------------+------------+
+| movie title    | revenue    |
++----------------+------------+
+| Avatar         | 2787965087 |
+| Titanic        | 1845034188 |
+| The Avengers   | 1519557910 |
+| Jurassic World | 1513528810 |
+| Furious 7      | 1506249360 |
++----------------+------------+
+
+4.
+SELECT Movie.title, GROUP_CONCAT(Genre.name)
+FROM Movie
+INNER JOIN HasGenre
+ON Movie.mId = HasGenre.mId
+INNER JOIN Genre
+ON HasGenre.gId = Genre.id
+WHERE Movie.mId in (
+	SELECT Movie.mId
+	FROM Movie
+	INNER JOIN HasGenre
+	ON Movie.mId = HasGenre.mId
+	INNER JOIN Genre
+	ON HasGenre.gId = Genre.id
+	WHERE Genre.name = 'Science Fiction' or Genre.name = 'Mystery'
+	GROUP BY Movie.title
+	HAVING COUNT(*) = 2)
+GROUP BY Movie.title
+LIMIT 5;
++--------------------------------------------+----------------------------------------+
+| title                                      | GROUP_CONCAT(Genre.name)               |
++--------------------------------------------+----------------------------------------+
+| 2001: A Space Odyssey                      | Science Fiction,Mystery,Adventure      |
+| Atlas Shrugged Part II                     | Drama,Science Fiction,Mystery          |
+| Atlas Shrugged Part III: Who is John Galt? | Drama,Science Fiction,Mystery          |
+| Beneath the Planet of the Apes             | Adventure,Science Fiction,Mystery      |
+| Blindness                                  | Drama,Mystery,Science Fiction,Thriller |
++--------------------------------------------+----------------------------------------+
+
+5.
+SELECT title, popularity
+FROM Movie
+WHERE popularity > (SELECT AVG(popularity) FROM Movie)
+LIMIT 5;
++-----------------+------------+
+| title           | popularity |
++-----------------+------------+
+| Four Rooms      |    22.8762 |
+| Star Wars       |    126.394 |
+| Finding Nemo    |    85.6888 |
+| Forrest Gump    |    138.133 |
+| American Beauty |    80.8786 |
++-----------------+------------+

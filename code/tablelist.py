@@ -13,15 +13,15 @@
 movie = ["""CREATE TABLE Movie (
                 budget int,
                 homepage varchar(150),
-                mId mediumint,
+                mId mediumint NOT NULL DEFAULT 0,
                 originalLanguage varCHAR(2),
                 title varchar(100),
-                tagline varchar(200),
+                tagline varchar(300),
                 voteAverage float,
                 voteCount int,
-                status set('Released', 'Rumored'),
+                status set('Released', 'Rumored', 'Post Production'),
                 releaseDate varchar(10),
-                runTime smallint,
+                runTime mediumint DEFAULT 0,
                 revenue bigint, 
                 popularity float,
                 overview varchar(1000),
@@ -49,21 +49,22 @@ production_country = ["""CREATE TABLE ProductionCountries (
 # max id for production_companies: 95063
 production_company = ["""CREATE TABLE ProductionCompanies (
                             id mediumint,
-                            name varchar(40),
+                            name varchar(80),
                             primary key (id));"""]
 
 # max value for keywords id: 238222
 keyword = ["""CREATE TABLE Keywords (
                 id mediumint,
-                name varchar(30),
+                name varchar(50),
                 primary key (id));"""]
 
 # join table between production_country and movie
 from_country = ["""CREATE TABLE FromCountry (
-                    mId mediumint,
-                    cId varchar(5),
-                    foreign key(mId) references Movie(mId),
-                    foreign key(cId) references ProductionCountries(iso_3166_1));"""]
+                mId mediumint,
+                cId varchar(5),
+                foreign key(mId) references Movie(mId),
+                foreign key(cId) references ProductionCountries(iso_3166_1));
+                """]
 
 # join table between production_company and movie
 from_company = ["""CREATE TABLE FromCompany (
@@ -94,7 +95,8 @@ languages = ["""CREATE TABLE HasLanguages (
                     foreign key(lId) references SpokenLanguage(iso_639_1));"""]
 
 table_list = []
-table_list += movie + genre + spokenLanguage + production_company + production_country + keyword
+table_list += movie + genre + spokenLanguage + production_company
+table_list += production_country + keyword
 table_list += from_company + from_country + has_genre + has_keyword + languages
 
 drop_list = ["DROP TABLE IF EXISTS FromCountry"]
@@ -108,3 +110,22 @@ drop_list += ["DROP TABLE IF EXISTS SpokenLanguage"]
 drop_list += ["DROP TABLE IF EXISTS ProductionCountries"]
 drop_list += ["DROP TABLE IF EXISTS ProductionCompanies"]
 drop_list += ["DROP TABLE IF EXISTS Keywords"]
+
+movie_attribute_list = ["budget",
+                        "homepage",
+                        "id",
+                        "original_language",
+                        "title",
+                        "tagline",
+                        "vote_average",
+                        "vote_count",
+                        "status",
+                        "release_date",
+                        "runtime",
+                        "revenue",
+                        "popularity",
+                        "overview",
+                        "original_title"]
+
+movie_int_list = ["budget", "vote_count"]
+movie_float_list = ["vote_average", "runtime", "revenue", "popularity"]
