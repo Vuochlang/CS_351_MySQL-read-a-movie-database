@@ -1,6 +1,6 @@
 # CS 351 - Introduction to database  
 
-<h2> Assignment 5: Read movie database into MySQL</h2>
+<h2> Assignment 5: Read a movie database into MySQL</h2>
 
 03/23/2021
 
