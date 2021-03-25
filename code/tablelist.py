@@ -1,3 +1,6 @@
+# contain all create table commands for each relations
+
+
 # note for max value for each attribute
 # -- mId: 459488
 # -- homepage: 138
