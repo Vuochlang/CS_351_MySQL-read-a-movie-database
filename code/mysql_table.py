@@ -17,7 +17,8 @@ class MysqlTable:
         try:
             mysql_database = mysql.connector.connect(user=self.user,
                                                      password=self.password,
-                                                     database=self.database)
+                                                     database=self.database,
+                                                     charset='utf8mb4')
         except mysql.connector.Error:
             print("Something is wrong while trying to connect")
         else:

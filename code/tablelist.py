@@ -1,3 +1,4 @@
+# note for max value for each attribute
 # -- mId: 459488
 # -- homepage: 138
 # -- title: 86
