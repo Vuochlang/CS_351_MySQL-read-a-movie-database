@@ -1,6 +1,3 @@
-# contain all create table commands for each relations
-
-
 # note for max value for each attribute
 # -- mId: 459488
 # -- homepage: 138
@@ -67,7 +64,8 @@ from_country = ["""CREATE TABLE FromCountry (
                 mId mediumint,
                 cId varchar(5),
                 foreign key(mId) references Movie(mId),
-                foreign key(cId) references ProductionCountries(iso_3166_1));
+                foreign key(cId) references ProductionCountries(iso_3166_1),
+                PRIMARY KEY(mId, cId));
                 """]
 
 # join table between production_company and movie
@@ -75,28 +73,32 @@ from_company = ["""CREATE TABLE FromCompany (
                     mId mediumint,
                     cId mediumint,
                     foreign key(mId) references Movie(mId),
-                    foreign key(cId) references ProductionCompanies(id));"""]
+                    foreign key(cId) references ProductionCompanies(id),
+                    PRIMARY KEY(mId, cId));"""]
 
 # join table between keywords and movie
 has_keyword = ["""CREATE TABLE HasKeyword (
                     mId mediumint,
                     kId mediumint,
                     foreign key(mId) references Movie(mId),
-                    foreign key(kId) references Keywords(id));"""]
+                    foreign key(kId) references Keywords(id),
+                    PRIMARY KEY(mId, kId));"""]
 
 # join table between genre and movie
 has_genre = ["""CREATE TABLE HasGenre (
                     mId mediumint,
                     gId smallint,
                     foreign key(mId) references Movie(mId),
-                    foreign key(gId) references Genre(id));"""]
+                    foreign key(gId) references Genre(id),
+                    PRIMARY KEY(mId, gId));"""]
 
 # join table between spoken_language and movie
 languages = ["""CREATE TABLE HasLanguages (
                     mId mediumint,
                     lId varchar(5),
                     foreign key(mId) references Movie(mId),
-                    foreign key(lId) references SpokenLanguage(iso_639_1));"""]
+                    foreign key(lId) references SpokenLanguage(iso_639_1),
+                    PRIMARY KEY(mId, lId));"""]
 
 table_list = []
 table_list += movie + genre + spokenLanguage + production_company

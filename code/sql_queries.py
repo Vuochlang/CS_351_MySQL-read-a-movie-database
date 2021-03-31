@@ -12,7 +12,7 @@ def command(question_number, name, password, database):
 
 def get_query_command(question_number):
     if question_number == 1:
-        return """SELECT voteAverage AS 'vote average' FROM Movie"""
+        return """SELECT AVG(budget) FROM Movie"""
 
     elif question_number == 2:
         return """SELECT Movie.title AS 'movie title',
